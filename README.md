@@ -1,6 +1,6 @@
 # 🏥 Puskesmas Management System - Laravel Edition
 
-Ini adalah hasil migrasi project Puskesmas PHP asli ke framework Laravel dengan **minimal perubahan pada kode asli**. Semua kode controller dan view dipindahkan langsung tanpa modifikasi untuk memastikan kompatibilitas.
+Ini adalah hasil migrasi project Puskesmas PHP asli ke framework Laravel dengan
 
 ## 📋 Daftar Isi
 
