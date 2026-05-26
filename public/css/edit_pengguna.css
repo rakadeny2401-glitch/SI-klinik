@@ -1,0 +1,126 @@
+:root {
+    --accent: #004085;
+    --border: #d6dbe3;
+    --bg-light: #f7f9fc;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f6fa;
+}
+
+.edit-container {
+    width: 520px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 28px 34px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.08);
+}
+
+.edit-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.edit-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+    display: block;
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-light);
+    font-size: 15px;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 64, 133, 0.15);
+    outline: none;
+}
+
+.btn-group {
+    margin-top: 25px;
+    display: flex;
+    gap: 12px;
+}
+
+.btn-half {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: 0.2s;
+}
+
+.btn-save {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-save:hover {
+    background: #003366;
+}
+
+.btn-reset {
+    background: #e9eff6;
+    color: var(--accent);
+    border: 1px solid #b6c4d7;
+}
+
+.btn-reset:hover {
+    background: #dce7f5;
+}
+
+.btn-back-wrapper {
+    margin-top: 16px;
+}
+
+.btn-back {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 15px;
+    background: #e9eff6;
+    border: 1px solid #b6c4d7;
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn-back:hover {
+    background: #dce7f5;
+}

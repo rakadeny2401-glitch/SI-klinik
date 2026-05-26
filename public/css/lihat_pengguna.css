@@ -1,0 +1,122 @@
+form[method="GET"] {
+    display: flex; 
+    gap: 15px; 
+    align-items: flex-end; 
+    margin-bottom: 20px;
+}
+
+form[method="GET"] label {
+    font-size: 14px;
+    color: #555;
+    font-weight: 600;
+}
+
+form[method="GET"] select,
+form[method="GET"] input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form[method="GET"] input[type="text"] {
+    width: 200px; 
+}
+
+form[method="GET"] select:focus,
+form[method="GET"] input[type="text"]:focus {
+    border-color: var(--accent); 
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 64, 133, 0.2); 
+}
+
+form[method="GET"] button[type="submit"] {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+form[method="GET"] button[type="submit"]:hover {
+    background-color: #003366;
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 20px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px; 
+    overflow: hidden; 
+}
+
+thead tr {
+    background-color: var(--accent);
+    color: #fff;
+    text-align: left;
+    font-weight: 600;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+}
+
+th {
+    border-color: #003366;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f1f1f1;
+    transition: background-color 0.1s ease;
+}
+
+tbody tr:hover {
+    background-color: #f7f9fc;
+}
+
+tbody tr td[colspan] {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    background-color: #fff;
+}
+
+td.actions a {
+    display: inline-block;
+    background-color: #f1f7ff; 
+    color: var(--accent); 
+    text-decoration: none;
+    padding: 6px 10px;
+    border: 1px solid #cce5ff;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+td.actions a:hover {
+    background-color: #e9f0ff; 
+}
+
+form[method="GET"] {
+    display: flex; 
+    gap: 15px; 
+    align-items: center; 
+    margin-bottom: 20px;
+}
+
+form[method="GET"] label {
+    font-size: 14px;
+    color: #555;
+    font-weight: 600;
+    margin-right: -10px; 
+}
+

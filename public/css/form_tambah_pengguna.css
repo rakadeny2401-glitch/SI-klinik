@@ -1,0 +1,122 @@
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+form {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e5e5e5;
+    max-width: 600px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+form label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="time"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 15px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 64, 133, .2);
+}
+
+form textarea {
+    height: 90px;
+    resize: vertical;
+}
+
+form input[type="radio"] {
+    margin-right: 6px;
+    transform: scale(1.1);
+}
+
+form label input[type="radio"] {
+    margin-right: 3px;
+}
+
+form button[type="submit"] {
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color .2s ease, transform .15s ease;
+}
+
+form button[type="submit"]:hover {
+    background-color: #003d80;
+    transform: translateY(-2px);
+}
+
+a button {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color .2s ease;
+    margin-top: 20px;
+}
+
+a button:hover {
+    background-color: #5a6268;
+}
+
+.pw-note {
+    font-size: 13px;
+}
+
+/* Localhost toast styles (restored per-page) */
+#localhost-toast{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    top:-180px;
+    z-index:99999;
+    transition:top 300ms ease, opacity 200ms ease;
+    pointer-events:none;
+}
+
+#localhost-toast-box{
+    background:var(--accent);
+    color:#fff;
+    padding:10px 16px;
+    border-radius:6px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.18);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    pointer-events:all;
+}
+
+#localhost-toast-box.show{
+    transform:none;
+}
+
+/* success (green) variant used for added notifications */

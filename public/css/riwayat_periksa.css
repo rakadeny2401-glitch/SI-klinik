@@ -1,0 +1,101 @@
+:root {
+    --accent: #004085;
+}
+
+/* --- Container utama halaman --- */
+.riwayat-container {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    margin-top: 20px;
+}
+
+/* --- Judul Halaman --- */
+.riwayat-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 20px;
+    border-left: 4px solid var(--accent);
+    padding-left: 12px;
+}
+
+/* --- Tabel Riwayat Periksa --- */
+.riwayat-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 15px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.riwayat-table th {
+    background-color: var(--accent);
+    color: #fff;
+    padding: 12px 15px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.riwayat-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.riwayat-table tr:hover td {
+    background-color: #f3f7fc;
+}
+
+/* --- Tombol Aksi (Detail, Periksa, dll) --- */
+.action-btn {
+    display: inline-block;
+    background-color: var(--accent);
+    color: #fff !important;
+    text-decoration: none;
+    padding: 7px 14px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 5px;
+    transition: 0.2s ease;
+}
+
+.action-btn:hover {
+    background-color: #003366;
+}
+
+/* --- Fix tombol agar tidak turun ke 2 baris --- */
+.action-group {
+    white-space: nowrap;
+}
+
+.action-group a {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+/* --- Jika tabel kosong --- */
+.riwayat-container p {
+    font-size: 15px;
+    color: #666;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .riwayat-container {
+        padding: 20px;
+    }
+
+    .riwayat-table th,
+    .riwayat-table td {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .action-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}
