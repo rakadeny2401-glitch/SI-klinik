@@ -15,7 +15,7 @@ class LegacyCodeProvider extends ServiceProvider
         $this->app->singleton('legacy.db', function () {
             $servername = env('DB_HOST', 'localhost');
             $username = env('DB_USERNAME', 'root');
-            $password = env('DB_PASSWORD', '123');
+            $password = env('DB_PASSWORD', '');
             $dbname = env('DB_DATABASE', 'puskesmas');
 
             $koneksi = new \mysqli($servername, $username, $password, $dbname);

@@ -6,7 +6,7 @@
 $servername = getenv('DB_HOST') ?: "localhost";
 $username = getenv('DB_USERNAME') ?: "root";
 $password = getenv('DB_PASSWORD') ?: "123";
-$dbname = getenv('DB_DATABASE') ?: "puskesmas";
+$dbname = getenv('DB_DATABASE') ?: "puskesmas-pf";
 
 $koneksi = new mysqli($servername, $username, $password, $dbname);
 
