@@ -1,0 +1,97 @@
+:root{--sidebar-w:240px;--topbar-h:56px;--accent:#004085}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#222}
+.app-topbar{height:var(--topbar-h);display:flex;align-items:center;padding:0 12px;background:#fff;border-bottom:1px solid #eee;position:fixed;left:0;right:0;top:0;z-index:40}
+.app-topbar .brand{font-weight:700;color:var(--accent);margin-left:8px}
+.btn-toggle{background:transparent;border:0;font-size:20px;cursor:pointer}
+.topbar-right{margin-left:auto;display:flex;align-items:center}
+.app-layout{display:flex;min-height:100vh}
+.app-sidebar{width:var(--sidebar-w);padding-top:var(--topbar-h);background:#f8f9fb;border-right:1px solid #eee;position:fixed;left:0;top:0;bottom:0}
+.app-sidebar nav ul{list-style:none;padding:12px;margin:0}
+.app-sidebar nav li{margin:6px 0}
+.app-sidebar nav a{display:block;padding:8px 10px;color:#333;text-decoration:none;border-radius:4px}
+.app-sidebar nav a:hover{background:#e9f0ff;color:var(--accent)}
+.app-content{margin-left:var(--sidebar-w);padding:calc(var(--topbar-h) + 16px) 20px 40px 20px;flex:1}
+.app-footer{text-align:center;padding:12px;border-top:1px solid #eee;background:#fff}
+
+.app-sidebar nav a.active{
+    background: #eaf3ff; 
+    color: var(--accent);
+    font-weight:600;
+}
+.app-sidebar nav a.active:hover{
+    background:#dfeefc;
+}
+
+.profile{position:relative}
+.profile-btn{background:transparent;border:0;cursor:pointer;padding:6px;border-radius:6px;display:flex;align-items:center}
+.avatar{display:inline-block;width:36px;height:36px;border-radius:50%;background:#e6f0ff;color:var(--accent);font-weight:700;display:flex;align-items:center;justify-content:center}
+.profile-badge{position:absolute;right:0;top:48px;min-width:280px;max-width:360px;background:#fff;border:1px solid #e6e9ef;border-radius:8px;box-shadow:0 8px 20px rgba(20,30,50,0.08);padding:12px;display:none;z-index:60}
+.profile-badge[aria-hidden="false"]{display:block}
+.badge-header{display:flex;align-items:center;padding-bottom:8px;border-bottom:1px solid #f1f3f6}
+.badge-avatar{width:44px;height:44px;border-radius:50%;background:#eaf3ff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;margin-right:8px}
+.badge-meta .badge-name{font-weight:700}
+.badge-meta .badge-role{font-size:13px;color:#666}
+.badge-actions{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:10px
+}
+
+.btn-link{
+    display:inline-block;
+    background:transparent;
+    border:0;
+    color:var(--accent);
+    text-decoration:none;
+    padding:8px;
+    border-radius:6px;
+    text-align:left
+}
+
+.btn-link:hover{
+    background:#f1f7ff
+}
+
+.app-sidebar{
+    transition:width .18s ease
+}
+
+.app-content {
+    position: relative;
+    z-index: 1;
+}
+
+.app-topbar {
+    z-index: 100;
+}
+
+#localhost-toast{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    top:-180px;
+    z-index:99999;
+    transition:top 300ms ease, opacity 200ms ease;
+    pointer-events:none;
+}
+
+#localhost-toast-box{
+    background:var(--accent);
+    color:#fff;
+    padding:10px 16px;
+    border-radius:6px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.18);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    pointer-events:all;
+}
+
+#localhost-toast-box.show{
+    transform:none;
+}
+
+#localhost-toast-box.success{
+    background:#28a745;
+}

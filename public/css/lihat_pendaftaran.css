@@ -1,0 +1,225 @@
+h3 {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 18px;
+}
+
+#show-add {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 15px;
+}
+
+#show-add:hover {
+    background-color: #218838;
+}
+
+#add-form label {
+    font-size: 13px;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+#add-form input[type="text"] {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 13px;
+    width: 260px;
+    max-width: 100%;
+    margin-bottom: 8px;
+}
+
+#add-form input[type="text"]:focus {
+    border-color: var(--accent);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 64, 133, 0.2);
+}
+
+#add-form button[type="submit"] {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#add-form button[type="submit"]:hover {
+    background-color: #003366;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 13px;
+}
+
+thead tr {
+    background-color: var(--accent);
+    color: #fff;
+    text-align: left;
+    font-weight: 600;
+}
+
+th, td {
+    padding: 8px 10px;
+    border: 1px solid #e0e0e0;
+}
+
+th {
+    border-color: #003366;
+}
+
+tbody tr {
+    background-color: #fff;
+    border-bottom: 1px solid #f1f1f1;
+    transition: background-color 0.1s ease;
+}
+
+tbody tr:hover {
+    background-color: #f7f9fc;
+}
+
+td a button {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 5px 7px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+td a button:hover {
+    background-color: #138496;
+}
+
+td form button[type="submit"] {
+    background-color: #c82333 !important;
+    color: #fff !important;
+    border: 0 !important;
+    padding: 5px 7px !important;
+    font-size: 12px !important;
+    border-radius: 4px;
+}
+
+td form button[type="submit"]:hover {
+    background-color: #a71d2a !important;
+}
+
+.app-content > a button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.app-content > a button:hover {
+    background-color: #5a6268;
+}
+
+/* Localhost toast styles (restored per-page) */
+#localhost-toast{
+    position:fixed;
+    left:50%;
+    transform:translateX(-50%);
+    top:-120px;
+    z-index:99999;
+    transition:top 300ms ease, opacity 200ms ease;
+    pointer-events:none;
+}
+
+#localhost-toast-box{
+    background:var(--accent);
+    color:#fff;
+    padding:10px 16px;
+    border-radius:6px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.18);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:14px;
+    pointer-events:all;
+}
+
+#localhost-toast-box.show{
+    transform:none;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 95%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 13px;
+}
+
+thead tr {
+    background-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+}
+
+th, td {
+    padding: 8px 10px;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+tbody tr {
+    background-color: #fff;
+    transition: background-color 0.1s ease;
+}
+
+tbody tr:hover {
+    background-color: #f7f9fc;
+}
+
+td form {
+    display: flex;
+    justify-content: center;
+}
+
+td form button {
+    background-color: #c82333;
+    color: #fff;
+    border: 0;
+    padding: 5px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+td form button:hover {
+    background-color: #a71d2a;
+}
+
+/* pagination moved to components.css */
+

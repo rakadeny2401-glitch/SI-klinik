@@ -1,0 +1,73 @@
+:root {
+    --blue: #004085;
+    --green: #0a7d32;
+    --gray: #6c757d;
+}
+
+.surat-container {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 25px;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+    color: white;
+}
+
+.btn.blue {
+    background: var(--blue);
+}
+
+.btn.blue:hover {
+    background: #003366;
+}
+
+.btn.green {
+    background: var(--green);
+}
+
+.btn.green:hover {
+    background: #085d27;
+}
+
+.btn.gray {
+    background: var(--gray);
+}
+
+.btn.gray:hover {
+    background: #5a636a;
+}
+
+@media (max-width: 768px) {
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}

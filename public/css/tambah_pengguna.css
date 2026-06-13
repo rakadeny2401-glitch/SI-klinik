@@ -1,0 +1,39 @@
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.tambah-wrapper {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.tambah-wrapper a button {
+    background-color: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color .2s ease, transform .15s ease;
+    min-width: 160px;
+}
+
+.tambah-wrapper a button:hover {
+    background-color: #003d80;
+    transform: translateY(-2px);
+}
+
+.kembali-btn {
+    margin-top: 25px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color .2s ease;
+}

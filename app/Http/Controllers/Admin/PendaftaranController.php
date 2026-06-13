@@ -1,0 +1,139 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Pasien;
+use App\Models\Dokter;
+use App\Models\Spesialis;
+use App\Models\Daftar;
+use App\Models\ProsesPasien;
+use Illuminate\Support\Facades\DB;
+
+class PendaftaranController extends Controller
+{
+    public function create()
+    {
+        if (session('role') !== 'admin') return redirect('/');
+
+        $spesialis = Spesialis::orderBy('nama_spesialis')->get();
+        $pasien = Pasien::orderBy('nama_pasien')->get();
+        $pasienMap = Pasien::all()->keyBy('id_pasien');
+        $dokter = Dokter::all();
+
+        $nama_admin = session('data.nama_admin') ?? '-';
+
+        return view('admin.pendaftaran.index', compact('spesialis', 'pasien', 'pasienMap', 'dokter','nama_admin'));
+    }
+
+    public function store(Request $request)
+    {
+        if (session('role') !== 'admin') return redirect('/');
+
+        $request->validate([
+            'id_spesialis' => 'required',
+            'waktu_daftar' => 'required',
+            'keluhan' => 'required'
+        ]);
+
+        $id_pasien = $request->id_pasien;
+        $id_spesialis = $request->id_spesialis;
+        $keluhan = $request->keluhan;
+        $id_admin = session('data.id_admin');
+        $waktu_daftar = $request->waktu_daftar;
+
+        if (!preg_match('/^\d{2}:\d{2}$/', $waktu_daftar)) {
+            return back()->with('error', 'Format waktu tidak valid');
+        }
+
+        $timePart = $waktu_daftar;
+        $fullTime = date('Y-m-d') . ' ' . $timePart . ':00';
+
+        $dokters = Dokter::where('id_spesialis', $id_spesialis)->get();
+
+        $selectedDoctor = null;
+
+        foreach ($dokters as $d) {
+            $start = substr($d->waktu_kerja, 0, 5);
+            $end = substr($d->waktu_pulang, 0, 5);
+
+            if ($start && $end && $timePart >= $start && $timePart < $end) {
+                $selectedDoctor = $d;
+                break;
+            }
+        }
+
+        if (!$selectedDoctor) {
+            return back()->with('error', 'Tidak ada dokter jaga di jam tersebut');
+        }
+
+        $pasien = null;
+
+        if ($id_pasien) {
+            $pasien = Pasien::find($id_pasien);
+
+            if (!$pasien) {
+                return back()->with('error', 'Pasien tidak ditemukan');
+            }
+
+            $aktif = Daftar::where('id_pasien', $id_pasien)
+                ->where('status_pendaftaran', '!=', 'selesai')
+                ->exists();
+
+            if ($aktif) {
+                return back()->with('error', 'Pasien masih memiliki pendaftaran aktif');
+            }
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            $daftar = Daftar::create([
+                'id_pasien' => $id_pasien,
+                'id_spesialis' => $id_spesialis,
+                'id_dokter' => $selectedDoctor->id_dokter,
+                'id_admin' => $id_admin,
+                'nama_pasien' => $pasien->nama_pasien ?? $request->nama_pasien,
+                'alamat_pasien' => $pasien->alamat_pasien ?? $request->alamat_pasien,
+                'jenis_kelamin' => $pasien->jenis_kelamin ?? $request->jenis_kelamin,
+                'umur' => $pasien->umur ?? $request->umur,
+                'nik' => $pasien->nik ?? $request->nik_manual,
+                'keluhan' => $keluhan,
+                'waktu_daftar' => $fullTime,
+                'status_pendaftaran' => 'dikonfirmasi'
+            ]);
+
+            $sp = Spesialis::find($id_spesialis);
+
+            if (!$sp) {
+                throw new \Exception('Spesialis tidak ditemukan');
+            }
+
+            $kode = strtoupper(substr($sp->nama_spesialis, 0, 1));
+
+            $urutan = ProsesPasien::where('id_spesialis', $id_spesialis)->count() + 1;
+
+            $noAntrian = $kode . '-' . str_pad($urutan, 3, '0', STR_PAD_LEFT);
+
+            ProsesPasien::create([
+                'id_daftar' => $daftar->id_daftar,
+                'id_pasien' => $id_pasien,
+                'id_dokter' => $selectedDoctor->id_dokter,
+                'id_admin' => $id_admin,
+                'id_spesialis' => $id_spesialis,
+                'tgl_pemeriksaan' => $fullTime,
+                'no_antrian' => $noAntrian
+            ]);
+
+            DB::commit();
+
+            return redirect('/admin/pendaftaran')->with('success', 'Pendaftaran berhasil');
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->with('error', 'Terjadi kesalahan sistem');
+        }
+    }
+}
