@@ -20,19 +20,15 @@
         "phpunit/phpunit": "^12.5.12"
     },
     "autoload": {
-        "psr-4": {
-            "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
-<<<<<<< HEAD
-        }
-=======
-        },
-        "files": [
-            "app/Helpers/LegacyHelpers.php"
-        ]
->>>>>>> ac8524e09c4b6d8e79d9dab77789553ccb3097ea
+    "psr-4": {
+        "App\\": "app/",
+        "Database\\Factories\\": "database/factories/",
+        "Database\\Seeders\\": "database/seeders/"
     },
+    "files": [
+        "app/Helpers/LegacyHelpers.php"
+    ]
+},
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/"

@@ -143,3 +143,18 @@ if (!function_exists('sanitize_input')) {
         return trim(stripslashes($input));
     }
 }
+
+if (!function_exists('is_active')) {
+
+    function is_active($pattern, $currentPage = null, $force = false)
+    {
+        if ($force) {
+            return 'bg-blue-500 text-white';
+        }
+
+        return request()->is($pattern)
+            ? 'bg-blue-500 text-white'
+            : '';
+    }
+
+}

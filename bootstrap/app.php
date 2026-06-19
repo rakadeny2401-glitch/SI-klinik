@@ -11,11 +11,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-<<<<<<< HEAD
-        //
-=======
         $middleware->append(\App\Http\Middleware\SetupLegacyEnvironment::class);
->>>>>>> ac8524e09c4b6d8e79d9dab77789553ccb3097ea
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
