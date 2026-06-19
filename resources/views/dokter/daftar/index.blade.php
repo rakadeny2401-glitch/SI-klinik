@@ -7,7 +7,6 @@
         <h2 class="text-2xl font-bold text-gray-800 tracking-wide">Daftar Pasien Antrean</h2>
     </div>
 
-    {{-- Kondisi jika data antrean kosong --}}
     @if(empty($data) || count($data) == 0)
         <div class="w-full max-w-xl mx-auto mt-12 p-8 bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.015)] text-center">
             <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -45,14 +44,18 @@
                             </td>
                             
                             <td class="p-4 text-center align-middle">
-                                <form method="POST" action="{{ url('/dokter/periksa') }}" class="m-0 inline-block">
-                                    @csrf
-                                    <input type="hidden" name="id_daftar" value="{{ $r->id_daftar }}">
-                                    <button type="submit" 
-                                            class="px-5 py-1.5 bg-[#c82333] hover:bg-[#b21f2d] text-white text-xs font-bold rounded-lg border-none cursor-pointer tracking-wide shadow-sm transition">
-                                        Periksa
-                                    </button>
-                                </form>
+                                @if($loop->first || $r->status_pendaftaran === 'pemeriksaan')
+                                    <form method="POST" action="{{ url('/dokter/periksa') }}" class="m-0 inline-block">
+                                        @csrf
+                                        <input type="hidden" name="id_daftar" value="{{ $r->id_daftar }}">
+                                        <button type="submit" 
+                                                class="px-5 py-1.5 bg-[#c82333] hover:bg-[#b21f2d] text-white text-xs font-bold rounded-lg border-none cursor-pointer tracking-wide shadow-sm transition">
+                                            Periksa
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-gray-500 font-semibold">Antrian {{ $loop->iteration }}</span>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

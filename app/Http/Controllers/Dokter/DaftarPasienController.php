@@ -15,11 +15,19 @@ class DaftarPasienController extends Controller
 
         $id_dokter = session('data.id_dokter');
 
-        $data = DB::table('daftar')
-            ->select('id_daftar', 'nama_pasien', 'umur', 'keluhan')
-            ->where('id_dokter', $id_dokter)
-            ->where('status_pendaftaran', 'dikonfirmasi')
-            ->orderByDesc('waktu_daftar')
+        $data = DB::table('proses_pasien')
+            ->join('daftar', 'daftar.id_daftar', '=', 'proses_pasien.id_daftar')
+            ->select(
+                'daftar.id_daftar',
+                'daftar.nama_pasien',
+                'daftar.umur',
+                'daftar.keluhan',
+                'daftar.status_pendaftaran',
+                'proses_pasien.no_antrian'
+            )
+            ->where('proses_pasien.id_dokter', $id_dokter)
+            ->whereIn('daftar.status_pendaftaran', ['dikonfirmasi','pemeriksaan'])
+            ->orderBy('proses_pasien.no_antrian', 'asc')
             ->get();
 
         return view('dokter.daftar.index', compact('data'));
