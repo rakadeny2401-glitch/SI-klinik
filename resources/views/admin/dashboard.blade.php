@@ -23,7 +23,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
-        <a href="/admin/pengguna" class="flex items-center gap-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_25px_rgba(0,0,0,0.06)] transition dynamic-card">
+        <a href="/admin/tambah-pengguna" class="flex items-center gap-4 bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_25px_rgba(0,0,0,0.06)] transition dynamic-card">
             <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6 text-indigo-600" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M9 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm6 .11c1.42-.45 2.5-1.74 2.5-3.31 0-2.03-1.65-3.69-3.69-3.69-.32 0-.62.05-.92.13C13.82 4.47 14.5 5.66 14.5 7c0 2.05-1.29 3.81-3.1 4.46 1.12.43 2.33.65 3.6.65zm-6 1.89c-2.7 0-8 1.35-8 4v2h16v-2c0-2.65-5.3-4-8-4zm6 .11c-.21 0-.42.02-.63.05 1.57 1.09 2.63 2.62 2.63 3.95v1.89h4v-1.89c0-2-3.81-4-6-4z"/>

@@ -2,13 +2,36 @@
 
 @section('content')
 
-<!-- Container Utama: Pakai w-full dan padding agar nge-stretch pas ke kanan -->
 <div class="w-full p-6 font-sans">
     
-    <!-- Judul Halaman -->
     <h2 class="text-3xl font-bold text-[#1f2937] mb-6">Daftar Pengguna</h2>
 
-    <!-- Form Filter & Cari: Baris lurus, item sejajar vertikal -->
+    {{-- Notifikasi --}}
+    @if(request('status') == 'added')
+        <div class="bg-green-50 text-green-700 p-3.5 rounded-lg mb-5 text-sm font-medium border border-green-200">
+            Pengguna berhasil ditambahkan
+        </div>
+    @endif
+
+    @if(request('status') == 'updated')
+        <div class="bg-blue-50 text-blue-700 p-3.5 rounded-lg mb-5 text-sm font-medium border border-blue-200">
+            Pengguna berhasil diperbarui
+        </div>
+    @endif
+
+    @if(request('status') == 'deleted')
+        <div class="bg-green-50 text-green-700 p-3.5 rounded-lg mb-5 text-sm font-medium border border-green-200">
+            Pengguna berhasil dihapus
+        </div>
+    @endif
+
+    @if(request('status') == 'error')
+        <div class="bg-red-50 text-red-700 p-3.5 rounded-lg mb-5 text-sm font-medium border border-red-200">
+            Pengguna tidak ditemukan
+        </div>
+    @endif
+
+    {{-- Form Filter & Cari --}}
     <form method="GET" action="/admin/pengguna" class="flex items-center gap-3 mb-6 text-sm">
         <div class="flex items-center gap-2">
             <label for="role" class="text-gray-600 shrink-0">Filter role:</label>
@@ -25,15 +48,13 @@
             <input type="text" name="cari" id="cari" placeholder="Cari..." value="{{ request('cari') }}" class="py-1.5 px-3 border border-[#ccc] rounded text-sm focus:outline-none w-48 placeholder-gray-400">
         </div>
 
-        <!-- Tombol Terapkan: Fix overlap, kasih padding pas -->
         <button type="submit" class="bg-[#004085] text-white py-1.5 px-4 rounded text-sm font-medium cursor-pointer transition hover:bg-[#002752] shrink-0">
             Terapkan
         </button>
     </form>
 
-    <!-- Wrapper Tabel: Pakai w-full border tipis luar -->
+    {{-- Tabel --}}
     <div class="w-full overflow-x-auto border border-[#dee2e6] rounded-sm bg-white">
-        <!-- Tabel Modern Full Width -->
         <table class="w-full border-collapse table-fixed">
             <thead>
                 <tr class="bg-[#004085]">
@@ -58,8 +79,7 @@
                     <td class="py-3 px-4 border border-[#dee2e6] text-center align-middle bg-white text-sm text-gray-700 truncate">{{ $user->name ?? $user->nama ?? '-' }}</td>
                     <td class="py-3 px-4 border border-[#dee2e6] text-center align-middle bg-white text-sm text-gray-700 whitespace-nowrap">{{ $user->no_identitas ?? $user->nik ?? '-' }}</td>
                     <td class="py-3 px-4 border border-[#dee2e6] text-center align-middle bg-white text-sm text-gray-700 whitespace-nowrap">{{ $user->no_hp ?? '-' }}</td>
-                    <td class="py-3 px-4 border border-[#dee2e6] text-center align-middle bg-white">
-                        <!-- Tombol Lihat: Dibuat inline-flex biar ga gepeng/ciut -->
+                    <td class="py-3 px-4 border border-[#dee2e6] text-center bg-white">
                         <a href="/admin/pengguna/lihat/{{ $user->role }}/{{ $user->id }}" class="inline-flex items-center justify-center py-1 px-3 bg-[#e6f0fa] text-[#004085] border border-[#b2cbe5] rounded text-xs font-medium no-underline transition hover:bg-[#cce2f5]">
                             Lihat
                         </a>
@@ -71,7 +91,7 @@
         </table>
     </div>
 
-    <!-- Pagination Container: Di tengah, margin top pas -->
+    {{-- Pagination --}}
     <div class="flex gap-1.5 justify-center items-center mt-6">
         @for($i = 1; $i <= $totalPage; $i++)
             <a href="?page={{ $i }}&role={{ request('role') }}&cari={{ request('cari') }}"

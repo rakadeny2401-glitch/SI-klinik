@@ -13,6 +13,104 @@ use App\Models\Spesialis;
 class PenggunaController extends Controller
 {
     // =========================
+    // DELETE PENGGUNA
+    // =========================
+    public function destroy($role, $id)
+    {
+        if (session('role') !== 'admin') {
+            return redirect('/');
+        }
+
+        if ($role === 'admin') {
+            $admin = Admin::find($id);
+            if ($admin) {
+                $admin->delete();
+                return redirect('/admin/pengguna?status=deleted&role=admin');
+            }
+        } elseif ($role === 'pasien') {
+            $pasien = Pasien::find($id);
+            if ($pasien) {
+                $pasien->delete();
+                return redirect('/admin/pengguna?status=deleted&role=pasien');
+            }
+        } elseif ($role === 'dokter') {
+            $dokter = Dokter::find($id);
+            if ($dokter) {
+                $dokter->delete();
+                return redirect('/admin/pengguna?status=deleted&role=dokter');
+            }
+        }
+
+        return redirect('/admin/pengguna?status=error');
+    }
+
+    public function edit($role, $id)
+    {
+        if (session('role') !== 'admin') return redirect('/');
+
+        $details = null;
+        $spesialis = [];
+
+        if ($role === 'admin') {
+            $details = Admin::findOrFail($id);
+        } elseif ($role === 'pasien') {
+            $details = Pasien::findOrFail($id)->toArray();
+        } elseif ($role === 'dokter') {
+            $details = Dokter::findOrFail($id)->toArray();
+            $spesialis = Spesialis::all();
+        }
+
+        return view('admin.pengguna.edit_pengguna', compact('role', 'id', 'details', 'spesialis'));
+    }
+
+    public function update(Request $request)
+    {
+        if (session('role') !== 'admin') return redirect('/');
+
+        $role = $request->role;
+        $id   = $request->id;
+
+        if ($role === 'admin') {
+            $admin = Admin::findOrFail($id);
+            $admin->nama_admin = $request->nama_admin;
+            $admin->waktu_jaga = $request->waktu_jaga;
+            if ($request->passwordadmin) {
+                $admin->passwordadmin = preg_replace('/\D/', '', $request->passwordadmin);
+            }
+            $admin->save();
+        } elseif ($role === 'pasien') {
+            $pasien = Pasien::findOrFail($id);
+            $pasien->nik = $request->nik;
+            $pasien->nama_pasien = $request->nama_pasien;
+            $pasien->alamat_pasien = $request->alamat_pasien;
+            $pasien->umur = $request->umur;
+            $pasien->jenis_kelamin = $request->jenis_kelamin;
+            $pasien->no_hp = $request->no_hp;
+            if ($request->password) {
+                $pasien->password = preg_replace('/\D/', '', $request->password);
+            }
+            $pasien->save();
+        } elseif ($role === 'dokter') {
+            $dokter = Dokter::findOrFail($id);
+            $dokter->nama_dokter = $request->nama_dokter;
+            $dokter->no_hp_dokter = $request->no_hp_dokter;
+            $dokter->alamat_dokter = $request->alamat_dokter;
+            $dokter->tgl_lahir_dokter = $request->tgl_lahir_dokter;
+            $dokter->waktu_kerja = $request->waktu_kerja;
+            $dokter->waktu_pulang = date('H:i:s', strtotime($request->waktu_kerja . ' +6 hours'));
+            $dokter->id_spesialis = $request->id_spesialis;
+            if ($request->passworddok) {
+                $dokter->passworddok = preg_replace('/\D/', '', $request->passworddok);
+            }
+            $dokter->save();
+        }
+
+        return redirect('/admin/pengguna?status=updated&role='.$role);
+    }
+
+
+
+    // =========================
     // MENU UTAMA (DENGAN REPARASI UNION SINTAKS)
     // =========================
     public function index(Request $request)

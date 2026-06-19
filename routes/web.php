@@ -45,6 +45,12 @@ Route::prefix('admin')->group(function () {
 
     Route::get('/dashboard', [AdminDashboardController::class, 'index']);
 
+
+    Route::get('/tambah-pengguna', function () {
+        return view('admin.pengguna.tambah_pengguna');
+    });
+
+
     /*
     |--------------------------------------------------------------------------
     | SPESIALIS
@@ -76,6 +82,12 @@ Route::prefix('admin')->group(function () {
     Route::post('/pengguna/dokter', [PenggunaController::class, 'storeDokter']);
 
     Route::get('/pengguna/lihat/{role}/{id}', [PenggunaController::class, 'show']);
+
+    Route::delete('/pengguna/hapus/{role}/{id}', [PenggunaController::class, 'destroy']);
+    // Edit & Update Pengguna
+    Route::get('/pengguna/edit/{role}/{id}', [PenggunaController::class, 'edit']);
+    Route::post('/pengguna/update', [PenggunaController::class, 'update']);
+
 
 
     /*
