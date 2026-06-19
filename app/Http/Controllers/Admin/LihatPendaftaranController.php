@@ -15,7 +15,7 @@ class LihatPendaftaranController extends Controller
         $perPage = 5;
         $page = max(1, (int) $request->get('page', 1));
 
-        $data = DB::table('daftar as d')
+        $query = DB::table('daftar as d')
             ->leftJoin('spesialis as s', 'd.id_spesialis', '=', 's.id_spesialis')
             ->leftJoin('dokter as doc', 'd.id_dokter', '=', 'doc.id_dokter')
             ->leftJoin('admin as a', 'd.id_admin', '=', 'a.id_admin')
@@ -35,14 +35,35 @@ class LihatPendaftaranController extends Controller
                 'a.nama_admin',
                 'pp.no_antrian',
                 'pp.tgl_pemeriksaan'
-            )
+            );
+
+        if ($request->filled('status')) {
+            $query->where('d.status_pendaftaran', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('d.nama_pasien', 'like', "%{$search}%")
+                ->orWhere('d.nik', 'like', "%{$search}%")
+                ->orWhere('doc.nama_dokter', 'like', "%{$search}%")
+                ->orWhere('s.nama_spesialis', 'like', "%{$search}%");
+            });
+        }
+
+        $data = $query
             ->orderByDesc('d.id_daftar')
             ->get();
 
         $totalPage = (int) ceil($data->count() / $perPage);
         $rows = $data->slice(($page - 1) * $perPage, $perPage)->values();
 
-        return view('admin.pendaftaran.lihat', compact('rows', 'page', 'totalPage'));
+        return view('admin.pendaftaran.lihat', compact(
+            'rows',
+            'page',
+            'totalPage'
+        ));
     }
 
     public function confirm(Request $request)
@@ -69,7 +90,10 @@ class LihatPendaftaranController extends Controller
                     'id_admin' => $id_admin
                 ]);
 
-            $sp = DB::table('spesialis')->where('id_spesialis', $daftar->id_spesialis)->first();
+            $sp = DB::table('spesialis')
+                ->where('id_spesialis', $daftar->id_spesialis)
+                ->first();
+
             $kode = strtoupper(substr($sp->nama_spesialis, 0, 1));
 
             $urutan = DB::table('proses_pasien')
@@ -102,8 +126,11 @@ class LihatPendaftaranController extends Controller
             return redirect('/admin/pendaftaran/lihat');
 
         } catch (\Throwable $e) {
+
             DB::rollBack();
-            return redirect('/admin/pendaftaran/lihat')->with('error', 'Gagal konfirmasi');
+
+            return redirect('/admin/pendaftaran/lihat')
+                ->with('error', 'Gagal konfirmasi');
         }
     }
 }

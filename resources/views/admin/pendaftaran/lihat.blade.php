@@ -7,6 +7,55 @@
         Daftar Pendaftaran
     </h2>
 
+    <div class="flex justify-end mb-4">
+        <form method="GET" action="" class="flex items gap-2">
+
+            <select
+                name="status"
+                class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+
+                <option value="">Semua Status</option>
+
+                <option value="pengecekan"
+                    {{ request('status') == 'pengecekan' ? 'selected' : '' }}>
+                    Pengecekan
+                </option>
+
+                <option value="dikonfirmasi"
+                    {{ request('status') == 'dikonfirmasi' ? 'selected' : '' }}>
+                    Dikonfirmasi
+                </option>
+
+                <option value="selesai"
+                    {{ request('status') == 'selesai' ? 'selected' : '' }}>
+                    Selesai
+                </option>
+
+            </select>
+
+            <input
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Cari pasien, NIK, dokter..."
+                class="px-3 py-2 border border-gray-300 rounded-lg text-sm w-64">
+
+            <button
+                type="submit"
+                class="px-4 py-2 bg-[#004085] text-white rounded-lg text-sm hover:opacity-90">
+                Cari
+            </button>
+
+            @if(request('status') || request('search'))
+                <a href="/admin/pendaftaran/lihat"
+                class="px-4 py-2 bg-gray-500 text-white rounded-lg text-sm hover:opacity-90">
+                    Reset
+                </a>
+            @endif
+
+        </form>
+    </div>
+
     <div class="w-full bg-white rounded-xl border border-gray-200 shadow-[0_4px_12px_rgba(0,0,0,0.02)] overflow-hidden">
         
         <div class="w-full overflow-x-auto">
@@ -84,18 +133,18 @@
 
     <div class="flex justify-center items-center gap-1.5 mt-6">
         @for($i = 1; $i <= $totalPage; $i++)
-            <a href="?page={{ $i }}" 
-               class="inline-flex items-center justify-center min-w-[32px] h-8 px-2.5 text-xs font-semibold rounded-lg no-underline transition-all duration-150
-                      {{ $page == $i 
-                         ? 'bg-[#004085] text-white shadow-sm' 
-                         : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400' }}">
+            <a href="?page={{ $i }}&status={{ request('status') }}&search={{ request('search') }}" 
+            class="inline-flex items-center justify-center min-w-[32px] h-8 px-2.5 text-xs font-semibold rounded-lg no-underline transition-all duration-150
+                    {{ $page == $i 
+                        ? 'bg-[#004085] text-white shadow-sm' 
+                        : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50 hover:border-gray-400' }}">
                 {{ $i }}
             </a>
         @endfor
         
         @if($page < $totalPage)
-            <a href="?page={{ $page + 1 }}" 
-               class="inline-flex items-center justify-center h-8 px-3 text-xs font-semibold bg-white text-gray-600 border border-gray-300 rounded-lg no-underline transition hover:bg-gray-50 hover:border-gray-400">
+            <a href="?page={{ $page + 1 }}&status={{ request('status') }}&search={{ request('search') }}" 
+            class="inline-flex items-center justify-center h-8 px-3 text-xs font-semibold bg-white text-gray-600 border border-gray-300 rounded-lg no-underline transition hover:bg-gray-50 hover:border-gray-400">
                 Next »
             </a>
         @endif
