@@ -102,7 +102,20 @@ class PendaftaranController extends Controller
             if (!$sp) throw new \Exception('Spesialis tidak ditemukan');
 
             $kode = strtoupper(substr($sp->nama_spesialis, 0, 1));
-            $urutan = ProsesPasien::where('id_spesialis', $id_spesialis)->count() + 1;
+
+            $lastProses = ProsesPasien::join('daftar','daftar.id_daftar','=','proses_pasien.id_daftar')
+                ->where('proses_pasien.id_spesialis', $id_spesialis) // prefix tabel agar tidak ambigu
+                ->where('daftar.status_pendaftaran','!=','selesai')
+                ->orderBy('proses_pasien.tgl_pemeriksaan','desc')
+                ->first();
+
+            if ($lastProses && strtotime($lastProses->tgl_pemeriksaan) >= strtotime($fullTime)) {
+                $tgl_pemeriksaan = date('Y-m-d H:i:s', strtotime("+30 minutes", strtotime($lastProses->tgl_pemeriksaan)));
+            } else {
+                $tgl_pemeriksaan = $fullTime;
+            }
+
+            $urutan = ProsesPasien::where('proses_pasien.id_spesialis', $id_spesialis)->count() + 1;
             $noAntrian = $kode . '-' . str_pad($urutan, 3, '0', STR_PAD_LEFT);
 
             ProsesPasien::create([
@@ -111,7 +124,7 @@ class PendaftaranController extends Controller
                 'id_dokter'      => $selectedDoctor->id_dokter,
                 'id_admin'       => $id_admin,
                 'id_spesialis'   => $id_spesialis,
-                'tgl_pemeriksaan'=> $fullTime,
+                'tgl_pemeriksaan'=> $tgl_pemeriksaan,
                 'no_antrian'     => $noAntrian
             ]);
 
