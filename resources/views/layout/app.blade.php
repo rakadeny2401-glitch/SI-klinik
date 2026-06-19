@@ -4,7 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $page_title ?? 'Puskesmas' }}</title>
+    <title>{{ $page_title ?? 'UPT Puskesmas Rusunawa' }}</title>
+
+    {{-- Favicon --}}
+    <link rel="icon" type="image/png" href="{{ asset('logo1.png') }}">
 
     {{-- GLOBAL CSS --}}
     @vite([
@@ -32,7 +35,7 @@
 
     <header class="w-full h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 sticky top-0 z-50">
         <div class="font-bold text-[#004085] text-lg tracking-wide">
-            Puskesmas Cisaranten Kulon
+            UPT Puskesmas Rusunawa
         </div>
 
         @php

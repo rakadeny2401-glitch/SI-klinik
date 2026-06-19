@@ -21,12 +21,17 @@ class PertanyaanSuratController extends Controller
             ->where('id_daftar', $id_daftar)
             ->exists();
 
+        $suratSakitSudahAda = DB::table('surat_ktrgnsakit')
+            ->where('id_daftar', $id_daftar)
+            ->exists();
+
         return view(
             'dokter.pertanyaan_surat.index',
             compact(
                 'id_daftar',
                 'id_pasien',
-                'rujukanSudahAda'
+                'rujukanSudahAda',
+                'suratSakitSudahAda'
             )
         );
     }
