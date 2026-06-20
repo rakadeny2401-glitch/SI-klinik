@@ -159,50 +159,63 @@ if (empty($selectedDoctor->id_dokter)) {
         }
     }
 
-// Tambahkan fungsi ini di PendaftaranController.php
-public function confirm(Request $request)
+    public function confirm(Request $request)
 {
     $request->validate(['id_daftar' => 'required']);
 
     DB::beginTransaction();
     try {
-        // 1. Ambil data pendaftaran
         $daftar = Daftar::findOrFail($request->id_daftar);
-        
-        // 2. Update status
         $daftar->status_pendaftaran = 'dikonfirmasi';
         $daftar->save();
 
-        // 3. Ambil data spesialis untuk kode antrean
         $sp = Spesialis::find($daftar->id_spesialis);
+        if (!$sp) {
+            throw new \Exception('Spesialis tidak ditemukan');
+        }
         $kode = strtoupper(substr($sp->nama_spesialis, 0, 1));
 
-        // 4. Hitung urutan antrean (LOGIKA INI YANG MEMBUAT DATA PROSES PASIEN TERISI)
-        $urutan = ProsesPasien::where('id_spesialis', $daftar->id_spesialis)
-                    ->join('daftar', 'daftar.id_daftar', '=', 'proses_pasien.id_daftar')
-                    ->whereIn('daftar.status_pendaftaran', ['dikonfirmasi', 'pemeriksaan'])
-                    ->count() + 1;
+        $fullTime = date('Y-m-d H:i:s', strtotime($daftar->waktu_daftar));
+
+        $lastProses = ProsesPasien::join('daftar','daftar.id_daftar','=','proses_pasien.id_daftar')
+            ->where('proses_pasien.id_spesialis', $daftar->id_spesialis)
+            ->whereIn('daftar.status_pendaftaran',['dikonfirmasi','pemeriksaan'])
+            ->orderBy('proses_pasien.tgl_pemeriksaan','desc')
+            ->first();
+
+        if ($lastProses) {
+            if (strtotime($lastProses->tgl_pemeriksaan) >= strtotime($fullTime)) {
+                $tgl_pemeriksaan = date('Y-m-d H:i:s', strtotime("+30 minutes", strtotime($lastProses->tgl_pemeriksaan)));
+            } else {
+                $tgl_pemeriksaan = $fullTime;
+            }
+        } else {
+            $tgl_pemeriksaan = $fullTime;
+        }
+
+        $urutan = ProsesPasien::where('proses_pasien.id_spesialis', $daftar->id_spesialis)
+            ->join('daftar','daftar.id_daftar','=','proses_pasien.id_daftar')
+            ->whereIn('daftar.status_pendaftaran',['dikonfirmasi','pemeriksaan'])
+            ->count() + 1;
 
         $noAntrian = $kode . '-' . str_pad($urutan, 3, '0', STR_PAD_LEFT);
 
-        // 5. Simpan ke tabel proses_pasien agar datanya tidak kosong
         ProsesPasien::create([
             'id_daftar'       => $daftar->id_daftar,
             'id_pasien'       => $daftar->id_pasien,
             'id_dokter'       => $daftar->id_dokter,
-            'id_admin'        => session('data.id_admin'), // Pastikan admin login
+            'id_admin'        => session('data.id_admin'),
             'id_spesialis'    => $daftar->id_spesialis,
-            'tgl_pemeriksaan' => now(), 
+            'tgl_pemeriksaan' => $tgl_pemeriksaan,
             'no_antrian'      => $noAntrian
         ]);
 
         DB::commit();
-        return back()->with('success', 'Konfirmasi berhasil, antrean dan data proses pasien telah dibuat.');
-        
+        return back()->with('success', 'Konfirmasi berhasil, antrean dan jadwal pemeriksaan telah dibuat.');
     } catch (\Throwable $e) {
         DB::rollBack();
-        // Debug error jika gagal
         return back()->with('error', 'Gagal konfirmasi: ' . $e->getMessage());
     }
 }
+
 }

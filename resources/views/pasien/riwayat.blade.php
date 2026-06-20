@@ -44,12 +44,22 @@
                         
                         <td class="p-4 text-gray-700 font-medium whitespace-nowrap">{{ $r->nama_dokter }}</td>
                         
+                        {{-- No Antrian --}}
                         <td class="p-4 text-center font-bold text-[#004085] text-base whitespace-nowrap">
-                            A-{{ str_pad(($riwayat->currentPage() - 1) * $riwayat->perPage() + $loop->iteration, 3, '0', STR_PAD_LEFT) }}
+                            @if($r->status === 'pengecekan')
+                                -
+                            @else
+                                {{ $r->no_antrian }}
+                            @endif
                         </td>
                         
+                        {{-- Tanggal Pemeriksaan --}}
                         <td class="p-4 text-gray-500 whitespace-nowrap">
-                            {{ date('d M Y, H:i', strtotime($r->waktu_daftar)) }}
+                            @if($r->status === 'pengecekan')
+                                -
+                            @else
+                                {{ $r->tgl_pemeriksaan }}
+                            @endif
                         </td>
                         
                         <td class="p-4 text-center whitespace-nowrap">
@@ -74,10 +84,19 @@
                             </div>
                         </td>
                         
+                        {{-- Status --}}
                         <td class="p-4 text-center whitespace-nowrap">
-                            @if(($r->status ?? $r->status_pendaftaran) === 'selesai')
+                            @if($r->status === 'selesai')
                                 <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-md text-[11px] font-bold uppercase tracking-wide">
                                     Selesai
+                                </span>
+                            @elseif($r->status === 'dikonfirmasi')
+                                <span class="px-2.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-md text-[11px] font-bold uppercase tracking-wide">
+                                    Dikonfirmasi
+                                </span>
+                            @elseif($r->status === 'pemeriksaan')
+                                <span class="px-2.5 py-0.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-md text-[11px] font-bold uppercase tracking-wide">
+                                    Pemeriksaan
                                 </span>
                             @else
                                 <span class="px-2.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-100 rounded-md text-[11px] font-bold uppercase tracking-wide animate-pulse">
