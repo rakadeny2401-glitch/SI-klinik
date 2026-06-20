@@ -113,7 +113,7 @@
                                     @if(($r->status_pendaftaran ?? '') === 'pengecekan')
                                         <form method="POST" action="/admin/pendaftaran/confirm" class="inline m-0">
                                             @csrf
-                                            <input type="hidden" name="id_daftar" value="{{ $r->id_daftar }}">
+                                            <input type="hidden" name="id_value" value="{{ $r->id_daftar }}">
                                             <button type="submit" class="inline-flex items-center justify-center py-1.5 px-3 bg-[#dc3545] text-white border-none rounded text-xs font-semibold cursor-pointer transition hover:opacity-90 shadow-sm">
                                                 Konfirmasi
                                             </button>

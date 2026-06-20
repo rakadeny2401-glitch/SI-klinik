@@ -12,6 +12,15 @@
             <h2 class="text-2xl font-bold text-gray-800 mb-6">Tambah Admin</h2>
             <form method="POST" action="/admin/pengguna/admin" class="space-y-6">
                 @csrf
+                @if ($errors->any())
+    <div class="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm p-3">
+        <ul class="list-disc pl-5 space-y-1">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
                 <div>
                     <label class="block text-sm font-semibold text-gray-700">Nama Admin</label>
                     <input name="nama_admin" placeholder="Nama" class="mt-2 w-full border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400">

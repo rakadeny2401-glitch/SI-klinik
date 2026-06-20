@@ -29,19 +29,19 @@
 
                 <div class="flex flex-col gap-1.5">
                     <label class="text-sm font-semibold text-[#4b5563]">Nama Pasien</label>
-                    <input type="text" id="nama_pasien" disabled placeholder="akan terisi otomatis"
+                    <input type="text" id="nama_pasien" readonly placeholder="akan terisi otomatis"
                            class="w-full p-3 border border-[#d1d5db] text-sm disabled:bg-white">
                 </div>
 
                 <div class="flex flex-col gap-1.5">
                     <label class="text-sm font-semibold text-[#4b5563]">NIK</label>
-                    <input type="text" id="nik_manual" disabled placeholder="akan terisi otomatis"
+                    <input type="text" id="nik_manual" readonly placeholder="akan terisi otomatis"
                            class="w-full p-3 border border-[#d1d5db] text-sm disabled:bg-white">
                 </div>
 
                 <div class="flex flex-col gap-1.5">
                     <label class="text-sm font-semibold text-[#4b5563]">Alamat</label>
-                    <textarea id="alamat_pasien" disabled placeholder="akan terisi otomatis"
+                    <textarea id="alamat_pasien" readonly placeholder="akan terisi otomatis"
                               class="w-full p-3 border border-[#d1d5db] text-sm min-h-[120px] disabled:bg-white"></textarea>
                 </div>
 
