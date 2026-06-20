@@ -54,13 +54,23 @@ class PendaftaranController extends Controller
         $selectedDoctor = null;
 
         foreach ($dokters as $d) {
-            $start = substr($d->waktu_kerja, 0, 5);
-            $end   = substr($d->waktu_pulang, 0, 5);
-            if ($start && $end && $timePart >= $start && $timePart < $end) {
-                $selectedDoctor = $d;
-                break;
-            }
-        }
+    // Pastikan data tidak kosong
+    if (empty($d->waktu_kerja) || empty($d->waktu_pulang)) {
+        continue;
+    }
+
+    // Ubah jam ke format detik/timestamp agar mudah dibandingkan
+    $startTime = strtotime($d->waktu_kerja);
+    $endTime   = strtotime($d->waktu_pulang);
+    $inputTime = strtotime($timePart); // $timePart dari input admin (format HH:mm)
+
+    // Logika: Jika waktu input berada di antara jam kerja
+    // Gunakan <= untuk endTime agar pas jam pulang masih dihitung masuk
+    if ($inputTime >= $startTime && $inputTime <= $endTime) {
+        $selectedDoctor = $d;
+        break;
+    }
+}
 
         if (!$selectedDoctor) {
             return back()->with('error', 'Tidak ada dokter jaga di jam tersebut');
@@ -80,6 +90,10 @@ class PendaftaranController extends Controller
             return back()->with('error', 'Pasien masih memiliki pendaftaran aktif');
         }
 
+        // Tambahkan ini sebelum DB::beginTransaction() di PendaftaranController
+if (empty($selectedDoctor->id_dokter)) {
+    throw new \Exception('Gagal mendeteksi ID Dokter. Periksa jadwal dokter.');
+}
         DB::beginTransaction();
 
         try {
@@ -144,4 +158,51 @@ class PendaftaranController extends Controller
             return back()->with('error', 'Terjadi kesalahan sistem: '.$e->getMessage());
         }
     }
+
+// Tambahkan fungsi ini di PendaftaranController.php
+public function confirm(Request $request)
+{
+    $request->validate(['id_daftar' => 'required']);
+
+    DB::beginTransaction();
+    try {
+        // 1. Ambil data pendaftaran
+        $daftar = Daftar::findOrFail($request->id_daftar);
+        
+        // 2. Update status
+        $daftar->status_pendaftaran = 'dikonfirmasi';
+        $daftar->save();
+
+        // 3. Ambil data spesialis untuk kode antrean
+        $sp = Spesialis::find($daftar->id_spesialis);
+        $kode = strtoupper(substr($sp->nama_spesialis, 0, 1));
+
+        // 4. Hitung urutan antrean (LOGIKA INI YANG MEMBUAT DATA PROSES PASIEN TERISI)
+        $urutan = ProsesPasien::where('id_spesialis', $daftar->id_spesialis)
+                    ->join('daftar', 'daftar.id_daftar', '=', 'proses_pasien.id_daftar')
+                    ->whereIn('daftar.status_pendaftaran', ['dikonfirmasi', 'pemeriksaan'])
+                    ->count() + 1;
+
+        $noAntrian = $kode . '-' . str_pad($urutan, 3, '0', STR_PAD_LEFT);
+
+        // 5. Simpan ke tabel proses_pasien agar datanya tidak kosong
+        ProsesPasien::create([
+            'id_daftar'       => $daftar->id_daftar,
+            'id_pasien'       => $daftar->id_pasien,
+            'id_dokter'       => $daftar->id_dokter,
+            'id_admin'        => session('data.id_admin'), // Pastikan admin login
+            'id_spesialis'    => $daftar->id_spesialis,
+            'tgl_pemeriksaan' => now(), 
+            'no_antrian'      => $noAntrian
+        ]);
+
+        DB::commit();
+        return back()->with('success', 'Konfirmasi berhasil, antrean dan data proses pasien telah dibuat.');
+        
+    } catch (\Throwable $e) {
+        DB::rollBack();
+        // Debug error jika gagal
+        return back()->with('error', 'Gagal konfirmasi: ' . $e->getMessage());
+    }
+}
 }

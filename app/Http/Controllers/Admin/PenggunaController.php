@@ -295,35 +295,52 @@ class PenggunaController extends Controller
     // =========================
     public function storePasien(Request $request)
     {
+        // 1. Validasi Akses
         if (session('role') !== 'admin') return redirect('/');
 
+        // 2. Validasi Input
+        // Pastikan nama_pasien, alamat_pasien, dll sama dengan name="..." di blade
         $request->validate([
-            'nik' => 'required|digits:16',
-            'nama_pasien' => 'required',
+            'nik'           => 'required|digits:16',
+            'nama_pasien'   => 'required',
             'alamat_pasien' => 'required',
-            'umur' => 'required|numeric',
+            'umur'          => 'required|numeric',
             'jenis_kelamin' => 'required',
-            'no_hp' => 'required|numeric',
-            'password' => 'required|digits:6'
+            'no_hp'         => 'required|numeric',
+            'password'      => 'required|digits:6'
         ]);
 
+        // 3. Cek apakah NIK sudah ada
         if (Pasien::where('nik', $request->nik)->exists()) {
             return back()->with('error', 'NIK sudah terdaftar');
         }
 
-        $pasien = new Pasien();
-        $pasien->nik = $request->nik;
-        $pasien->nama_pasien = $request->nama_pasien;
-        $pasien->alamat_pasien = $request->alamat_pasien;
-        $pasien->umur = $request->umur;
-        $pasien->jenis_kelamin = $request->jenis_kelamin;
-        $pasien->no_hp = $request->no_hp;
-        $pasien->password = preg_replace('/\D/', '', $request->password);
-        $pasien->id_akses = $this->getIdAkses('pasien');
-        $pasien->no_identitas = $this->generateNoIdentitas();
-        $pasien->save();
+        // 4. Proses Simpan
+        try {
+    $pasien = new Pasien();
+    $pasien->nik            = $request->nik;
+    
+    // UBAH BARIS INI: Gunakan $request->nama jika itu yang terbaca oleh sistem
+    // Atau gunakan $request->input('nama_pasien')
+    $pasien->nama_pasien    = $request->nama_pasien ?? $request->nama; 
+    
+    $pasien->alamat_pasien  = $request->alamat_pasien;
+    $pasien->umur           = $request->umur;
+    $pasien->jenis_kelamin  = $request->jenis_kelamin;
+    $pasien->no_hp          = $request->no_hp;
+    $pasien->password       = preg_replace('/\D/', '', $request->password);
+    $pasien->id_akses       = $this->getIdAkses('pasien');
+    $pasien->no_identitas   = $this->generateNoIdentitas();
+    
+    $pasien->save();
 
-        return redirect('/admin/pengguna?status=added&role=pasien');
+            return redirect('/admin/pengguna?status=added&role=pasien')
+                   ->with('success', 'Data pasien berhasil ditambahkan');
+                   
+        } catch (\Exception $e) {
+            // Jika ada error database (seperti 1364), ini akan menangkapnya
+            return back()->with('error', 'Terjadi kesalahan sistem: ' . $e->getMessage());
+        }
     }
 
     // =========================

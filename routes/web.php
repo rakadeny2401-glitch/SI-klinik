@@ -50,7 +50,6 @@ Route::prefix('admin')->group(function () {
         return view('admin.pengguna.tambah_pengguna');
     });
 
-
     /*
     |--------------------------------------------------------------------------
     | SPESIALIS
@@ -96,14 +95,15 @@ Route::prefix('admin')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/pendaftaran', [PendaftaranController::class, 'create']);
-    Route::post('/pendaftaran', [PendaftaranController::class, 'store']);
+    Route::get('/pendaftaran', [App\Http\Controllers\Admin\PendaftaranController::class, 'create']);
+    Route::post('/pendaftaran', [App\Http\Controllers\Admin\PendaftaranController::class, 'store']);
+    
+    // Perhatikan rute ini, pastikan path-nya sesuai dengan yang ada di view
+    Route::post('/pendaftaran/confirm', [App\Http\Controllers\Admin\PendaftaranController::class, 'confirm']);
 
-    Route::post('/pendaftaran/confirm',
-        [LihatPendaftaranController::class, 'confirm']);
-
-    Route::get('/pendaftaran/lihat',
-        [LihatPendaftaranController::class, 'index']);
+    Route::post('/pendaftaran/confirm', [LihatPendaftaranController::class, 'confirm']);
+    
+    Route::get('/pendaftaran/lihat', [App\Http\Controllers\Admin\LihatPendaftaranController::class, 'index']);
 
 });
 

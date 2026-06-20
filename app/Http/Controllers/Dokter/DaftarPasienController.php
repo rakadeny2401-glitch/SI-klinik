@@ -15,9 +15,9 @@ class DaftarPasienController extends Controller
 
         $id_dokter = session('data.id_dokter');
 
-        $data = DB::table('proses_pasien')
-            ->join('daftar', 'daftar.id_daftar', '=', 'proses_pasien.id_daftar')
-            ->select(
+        $data = DB::table('daftar') // Ubah dari 'proses_pasien' ke 'daftar'
+        ->leftJoin('proses_pasien', 'daftar.id_daftar', '=', 'proses_pasien.id_daftar')
+        ->select(
                 'daftar.id_daftar',
                 'daftar.nama_pasien',
                 'daftar.umur',
@@ -25,7 +25,10 @@ class DaftarPasienController extends Controller
                 'daftar.status_pendaftaran',
                 'proses_pasien.no_antrian'
             )
-            ->where('proses_pasien.id_dokter', $id_dokter)
+->where(function($query) use ($id_dokter) {
+    $query->where('proses_pasien.id_dokter', $id_dokter)
+          ->orWhere('daftar.id_dokter', $id_dokter); // Cek apakah ID ada di salah satu tabel
+})
             ->whereIn('daftar.status_pendaftaran', ['dikonfirmasi','pemeriksaan'])
             ->orderBy('proses_pasien.no_antrian', 'asc')
             ->get();
